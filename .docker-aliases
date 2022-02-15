@@ -1,0 +1,31 @@
+# docker
+# if [ -f name.docker ]; then
+#   DEV_DOCKER_CONTAINER=$(<name.docker)
+# fi
+
+
+if [ -f .env ]; then
+  set -a
+  . ./.env
+  set +a
+  # DEV_DOCKER_CONTAINER=${PWD##*/} # When naming from current dir
+
+  # in order to create a new rails project and have the created files on the host we execute our the docker-rails-setup script
+  # that is copied over from the build command.
+  alias drsetup="docker run --rm --mount type=bind,source="$(pwd)",target=/${APP_NAME} ${APP_NAME}_web sh /${APP_NAME}/docker-rails-setup.sh"
+
+  # execute alias that uses local conatiner name (name.docker)
+  alias de="docker exec -it ${APP_NAME}"
+
+  # runs a command using an image.
+  # the container that runs the command will be automatically removed
+  alias drun="docker run --rm ${APP_NAME}_web"
+else
+  echo 'Cannot alias docker helpers. No .env file located in current directory. Add .env file and source ~/.zshrc'
+fi
+
+alias drailsnew="git clone --depth=1 --branch=main git@gitlab.nvtlabs.com:docker-dev/blank-rails-app.git .; rm -rf .git; git init; git add .; git commit -m 'Add docker files'"
+
+alias dcl='docker compose -f docker-compose.local.yml'
+alias daw='docker attach $(dcl ps -q web)'
+alias dclw='docker compose -f docker-compose.local.yml run --service-ports web' # CTRL+P, CTRL+q to exit
