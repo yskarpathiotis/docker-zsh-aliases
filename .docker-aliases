@@ -20,6 +20,8 @@ if [ -f .env ]; then
   # runs a command using an image.
   # the container that runs the command will be automatically removed
   alias drun="docker run --rm ${APP_NAME}_web"
+
+  alias dcurrent="echo ${APP_NAME}"
 else
   echo 'Cannot alias docker helpers. No .env file located in current directory. Add .env file and source ~/.zshrc'
 fi
