@@ -3,6 +3,9 @@
 #   DEV_DOCKER_CONTAINER=$(<name.docker)
 # fi
 
+alias dcu='docker compose up'
+alias dcb='docker compose down'
+alias dcd='docker compose down'
 
 if [ -f .env ]; then
   set -a
@@ -26,8 +29,16 @@ else
   echo 'Cannot alias docker helpers. No .env file located in current directory. Add .env file and source ~/.zshrc'
 fi
 
+# clone default docker rails project file, delete git dirs, init new git repo, and intial commit for blank project
 alias drailsnew="git clone --depth=1 --branch=main git@gitlab.nvtlabs.com:docker-dev/blank-rails-app.git .; rm -rf .git; git init; git add .; git commit -m 'Add docker files'"
 
 alias dcl='docker compose -f docker-compose.local.yml'
-alias daw='docker attach $(dcl ps -q web)'
+alias dclu='docker compose -f docker-compose.local.yml up'
+alias dclb='docker compose -f docker-compose.local.yml build'
+alias dcld='docker compose -f docker-compose.local.yml down'
+
+# attach to web container for interacting with pry
+alias daw='docker attach $(dcl ps -q web)' # CTRL+P, CTRL+q to exit
 alias dclw='docker compose -f docker-compose.local.yml run --service-ports web' # CTRL+P, CTRL+q to exit
+
+alias dss='cd ~/Code/docker/shared-services'
