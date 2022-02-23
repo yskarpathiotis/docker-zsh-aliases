@@ -37,6 +37,8 @@ if [ -f .env ]; then
   alias de="docker exec -it ${APP_NAME}"
 
   alias dcurrent="echo ${APP_NAME}"
+
+  echo "Docker APP_NAME=${APP_NAME}"
 else
   echo 'Cannot alias docker helpers. No .env file located in current directory. Add .env file and source ~/.zshrc'
 fi
