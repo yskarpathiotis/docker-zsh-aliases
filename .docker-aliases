@@ -4,14 +4,17 @@ alias drailsnew="git clone --depth=1 --branch=main git@gitlab.nvtlabs.com:docker
 alias dss='cd ~/Code/docker/shared-services'
 
 alias dcu='docker compose up'
-alias dcb='docker compose down'
+alias dcb='docker compose build; docker rmi $(docker images -f "dangling=true" -q);'
 alias dcd='docker compose down'
+alias dcr='docker compose run'
 
 # aliases using docker-compose.local.yml
 alias dcl='docker compose -f docker-compose.local.yml'
 alias dclu='docker compose -f docker-compose.local.yml up'
-alias dclb='docker compose -f docker-compose.local.yml build'
+alias dclb='docker compose -f docker-compose.local.yml build;'
+alias dclbc='docker compose -f docker-compose.local.yml build --no-cache; docker rmi $(docker images -f "dangling=true" -q);'
 alias dcld='docker compose -f docker-compose.local.yml down'
+alias dclr='docker compose -f docker-compose.local.yml run --rm web'
 
 # attach to web container for interacting with pry
 alias daw='docker attach $(dcl ps -q web)' # CTRL+P, CTRL+q to exit
