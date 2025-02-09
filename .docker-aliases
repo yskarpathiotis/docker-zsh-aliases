@@ -3,7 +3,13 @@ alias drailsnew="git clone --depth=1 --branch=main git@gitlab.nvtlabs.com:docker
 
 alias dss='cd ~/Code/docker/shared-services'
 
-alias dcu='docker compose up'
+# alias dcu='docker compose up'
+alias dcup='function _dcup() {
+  POSTGRES_VERSION=${1:-9.5}
+  VOLUME_VERSION=${POSTGRES_VERSION%.*}  # Truncate to integer
+  POSTGRES_VERSION=$POSTGRES_VERSION VOLUME_VERSION=$VOLUME_VERSION docker-compose up;
+}; _dcup'
+
 alias dcb='docker compose build; docker rmi $(docker images -f "dangling=true" -q);'
 alias dcd='docker compose down'
 alias dcr='docker compose run'
@@ -15,6 +21,9 @@ alias dclb='docker compose -f docker-compose.local.yml build;'
 alias dclbc='docker compose -f docker-compose.local.yml build --no-cache; docker rmi $(docker images -f "dangling=true" -q);'
 alias dcld='docker compose -f docker-compose.local.yml down'
 alias dclr='docker compose -f docker-compose.local.yml run --rm web'
+
+alias dctbc='docker compose -f docker-compose.testing.yml build --no-cache; docker rmi $(docker images -f "dangling=true" -q);'
+alias dctr='docker compose -f docker-compose.testing.yml run --rm test'
 
 # attach to web container for interacting with pry
 alias daw='docker attach $(dcl ps -q web)' # CTRL+P, CTRL+q to exit
